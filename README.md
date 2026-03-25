@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="EduQuest" src="https://github.com/abdelnourmfk/EduQuest/raw/master/metadata.json" />
+<img width="1200" height="475" alt="EduQuest Education" src="https://cdn-icons-png.flaticon.com/512/2942/2942655.png" />
 </div>
 
 # EduQuest - Système de Gestion Pédagogique
