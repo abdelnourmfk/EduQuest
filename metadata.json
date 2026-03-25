@@ -1,0 +1,7 @@
+{
+  "name": "EduQuest",
+  "description": "Système de gestion académique avancée pour universités et facultés.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
