@@ -113,7 +113,35 @@ export const loadDBFromSupabase = async (): Promise<DB> => {
   }
 };
 
-export const generatePassword = () => Math.random().toString(36).slice(-8);
+export const generatePassword = (): string => {
+  const length = 8;
+  const charset = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const charsetLength = charset.length; // 36
+  const result: string[] = [];
+
+  // Use window.crypto.getRandomValues for cryptographically secure randomness
+  const cryptoObj = window.crypto || (window as any).msCrypto;
+  if (!cryptoObj || typeof cryptoObj.getRandomValues !== 'function') {
+    // Fallback should be extremely unlikely in modern browsers; in case it happens,
+    // throw to avoid silently generating weak passwords.
+    throw new Error('Secure random number generator not available.');
+  }
+
+  while (result.length < length) {
+    const buffer = new Uint8Array(16);
+    cryptoObj.getRandomValues(buffer);
+    for (let i = 0; i < buffer.length && result.length < length; i++) {
+      const randomByte = buffer[i];
+      // Avoid modulo bias by only using values within a uniform range
+      if (randomByte < 252) { // 252 is the largest multiple of 36 less than 256
+        const index = randomByte % charsetLength;
+        result.push(charset.charAt(index));
+      }
+    }
+  }
+
+  return result.join('');
+};
 
 export const createNotification = async (userId: string, message: string, link?: string) => {
   const n: Notification = {
