@@ -613,7 +613,7 @@ export const StudentManager = ({ specialtyId }: { specialtyId: string }) => {
   const addStudent = async () => {
     setError('');
     if (!newStudent.firstName || !newStudent.lastName || !newStudent.username || !newStudent.email || !newStudent.birthDate || !activeLevel) {
-      setError("Veuillez remplir tous les champs obligatoires (Prénom, Nom, Email, Username, Date de naissance).");
+      setError("Veuillez remplir tous les champs requis pour l'étudiant·e (Prénom, Nom, Email, Username, Date de naissance).");
       return;
     }
     
@@ -860,10 +860,6 @@ export const StudentManager = ({ specialtyId }: { specialtyId: string }) => {
                   <label className="block text-sm font-semibold text-slate-700 mb-1">Nom</label>
                   <input className="w-full px-4 py-2 border rounded-lg outline-none" value={newStudent.lastName} onChange={e => setNewStudent({...newStudent, lastName: e.target.value})} />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Nom complet (facultatif)</label>
-                <input className="w-full px-4 py-2 border rounded-lg outline-none" value={newStudent.fullName} onChange={e => setNewStudent({...newStudent, fullName: e.target.value})} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Date de naissance</label>
@@ -1416,7 +1412,7 @@ export const TeacherAssignment = ({ specialtyId }: { specialtyId: string }) => {
   const addTeacher = async () => {
     setError('');
     if (!newTeacher.firstName || !newTeacher.lastName || !newTeacher.username || !newTeacher.email || !newTeacher.birthDate) {
-      setError("Veuillez remplir tous les champs requis pour l'enseignant·e (Prénom, Nom, Email, Username, Date de naissance). ");
+      setError("Veuillez remplir tous les champs requis pour l'enseignant·e (Prénom, Nom, Email, Username, Date de naissance).");
       return;
     }
     if (db.users.some(u => u.username === newTeacher.username)) {
@@ -1443,8 +1439,9 @@ export const TeacherAssignment = ({ specialtyId }: { specialtyId: string }) => {
       await supabaseService.saveUser(teacherToSave);
       setDb(prev => ({ ...prev, users: [...prev.users, teacherToSave] }));
       setSuccess("Enseignant·e ajouté·e avec succès !");
-      setNewTeacher({ firstName: '', lastName: '', fullName: '', username: '', email: '', phone: '', birthDate: '', password: '' });
       setShowTeacherModal(false);
+      setPrintData({ ...teacherToSave, password: teacherToSave.password });
+      setNewTeacher({ firstName: '', lastName: '', fullName: '', username: '', email: '', phone: '', birthDate: '', password: '' });
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'ajout de l'enseignant·e.");
     }
@@ -1509,8 +1506,8 @@ export const TeacherAssignment = ({ specialtyId }: { specialtyId: string }) => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Nom complet (facultatif)</label>
-                <input type="text" value={newTeacher.fullName} onChange={e => setNewTeacher({...newTeacher, fullName: e.target.value})} className="w-full px-4 py-2 border rounded-lg outline-none" />
+                <label className="block text-sm font-semibold text-slate-700 mb-1">Username</label>
+                <input type="text" value={newTeacher.username} onChange={e => setNewTeacher({...newTeacher, username: e.target.value})} className="w-full px-4 py-2 border rounded-lg outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Date de naissance</label>
@@ -1525,10 +1522,6 @@ export const TeacherAssignment = ({ specialtyId }: { specialtyId: string }) => {
                   <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
                   <input type="email" value={newTeacher.email} onChange={e => setNewTeacher({...newTeacher, email: e.target.value})} className="w-full px-4 py-2 border rounded-lg outline-none" />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
-                <input type="email" value={newTeacher.email} onChange={e => setNewTeacher({...newTeacher, email: e.target.value})} className="w-full px-4 py-2 border rounded-lg outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">Mot de passe (laissé vide = généré)</label>
