@@ -8,7 +8,7 @@ import Layout from './components/Layout';
 import { AdminDashboard, UniversityManager, SpecialtyManager, UserManager } from './components/AdminViews';
 import { AgentDashboard, ModuleManager, TeacherAssignment, TimetableManager, ValidationManager, MonitoringView, StudentManager, RoomManager } from './components/AgentViews';
 import { TeacherPlanning, TeacherGrades, TeacherResources } from './components/TeacherViews';
-import { StudentDashboard, StudentGrades, StudentTimetable, StudentResources } from './components/StudentViews';
+import { StudentDashboard, StudentGrades, StudentTimetable, StudentResources, StudentNotifications } from './components/StudentViews';
 import { LogIn, ShieldAlert, Bell, School } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -132,6 +132,7 @@ const App: React.FC = () => {
 
       case UserRole.STUDENT:
         if (activeView === 'dashboard') return <StudentDashboard studentId={user.id} />;
+        if (activeView === 'notifications') return <StudentNotifications studentId={user.id} />;
         if (activeView === 'results') return <StudentGrades studentId={user.id} />;
         if (activeView === 'timetable') return <StudentTimetable studentId={user.id} />;
         if (activeView === 'resources') return <StudentResources studentId={user.id} />;

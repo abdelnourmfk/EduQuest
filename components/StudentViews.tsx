@@ -102,6 +102,69 @@ export const StudentDashboard = ({ studentId }: { studentId: string }) => {
   );
 };
 
+export const StudentNotifications = ({ studentId }: { studentId: string }) => {
+  const { db, setDb } = useDB();
+  const student = db.users.find(u => u.id === studentId);
+  if (!student) return null;
+
+  if (!student.isApprovedForYear) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
+        <div className="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-6">
+          <AlertCircle className="w-10 h-10" />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">Inscription en attente</h2>
+        <p className="text-slate-500 max-w-md mx-auto">
+          Votre inscription administrative pour l'année en cours n'a pas encore été validée.
+        </p>
+      </div>
+    );
+  }
+
+  const notifications = db.notifications
+    .filter(n => n.userId === studentId)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const markAllAsRead = () => {
+    setDb(prev => ({
+      ...prev,
+      notifications: prev.notifications.map(n => n.userId === studentId ? { ...n, read: true } : n)
+    }));
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h3 className="text-3xl font-bold text-slate-900">Notifications</h3>
+          <p className="text-slate-500 mt-2">Toutes vos notifications récentes sont affichées ici.</p>
+        </div>
+        <button onClick={markAllAsRead} className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all">
+          Marquer tout comme lu
+        </button>
+      </div>
+
+      <div className="space-y-4">
+        {notifications.length > 0 ? notifications.map(n => (
+          <div key={n.id} className={`p-4 bg-white border rounded-2xl flex items-start gap-4 shadow-sm ${n.read ? 'border-slate-200' : 'border-indigo-300 bg-indigo-50/60'}`}>
+            <div className={`p-3 rounded-lg ${n.read ? 'bg-slate-100 text-slate-400' : 'bg-indigo-600 text-white'}`}>
+              <Bell className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm text-slate-700 font-medium leading-tight">{n.message}</p>
+              <p className="text-[10px] text-slate-400 mt-1">{new Date(n.date).toLocaleString('fr-FR')}</p>
+            </div>
+          </div>
+        )) : (
+          <div className="p-8 bg-white border border-slate-200 rounded-3xl text-center text-slate-400 italic">
+            Aucune notification.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export const StudentGrades = ({ studentId }: { studentId: string }) => {
   const { db, setDb } = useDB();
   const [activeSemester, setActiveSemester] = useState<1 | 2>(1);
