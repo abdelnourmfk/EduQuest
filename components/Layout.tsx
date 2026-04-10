@@ -60,8 +60,8 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children, activeView, s
     : 'w-64 glass-pane text-[var(--ink-strong)] fixed h-full no-print flex flex-col m-3 mb-3 rounded-3xl';
 
   const mainClass = liteMode
-    ? 'flex-1 ml-[17.5rem] p-8 bg-gray-100'
-    : 'flex-1 ml-[17.5rem] p-8';
+    ? 'flex-1 ml-[17.5rem] p-8 bg-gray-100 min-w-0'
+    : 'flex-1 ml-[17.5rem] p-8 min-w-0';
 
   return (
     <div className="flex min-h-screen">
@@ -131,7 +131,7 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children, activeView, s
         </header>
 
         {reduceMotion ? (
-          <div className={`rounded-3xl p-6 min-h-[calc(100vh-200px)] ${liteMode ? 'bg-white border border-slate-200' : 'glass-pane'}`}>
+          <div className={`rounded-3xl p-6 min-h-[calc(100vh-200px)] min-w-0 ${liteMode ? 'bg-white border border-slate-200' : 'glass-pane'}`}>
             {children}
           </div>
         ) : (
@@ -142,7 +142,7 @@ const Layout: React.FC<LayoutProps> = ({ user, onLogout, children, activeView, s
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.995 }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
-              className={`rounded-3xl p-6 min-h-[calc(100vh-200px)] page-transition ${liteMode ? 'bg-white border border-slate-200' : 'glass-pane'}`}
+              className={`rounded-3xl p-6 min-h-[calc(100vh-200px)] min-w-0 page-transition ${liteMode ? 'bg-white border border-slate-200' : 'glass-pane'}`}
             >
               {children}
             </motion.div>
