@@ -1,0 +1,61 @@
+flowchart LR
+  classDef actor fill:#f97316,stroke:#eab308,color:#fff,stroke-width:1.5;
+  classDef usecase fill:#8b5cf6,stroke:#7c3aed,color:#fff,stroke-width:1.5;
+
+  Admin[Admin]:::actor
+  Agent[Agent]:::actor
+  Teacher[Teacher]:::actor
+  Student[Student]:::actor
+
+  login((Se connecter)):::usecase
+  manageUnis((Gérer les universités)):::usecase
+  manageSpecs((Gérer les spécialités)):::usecase
+  manageUsers((Gérer les utilisateurs)):::usecase
+  viewDash((Voir le tableau de bord)):::usecase
+
+  agentLogin((Se connecter)):::usecase
+  followup((Voir Suivi & Alertes)):::usecase
+  manageModules((Gérer les modules)):::usecase
+  assignTeachers((Assigner des enseignants)):::usecase
+  manageTimetable((Gérer l'emploi du temps)):::usecase
+  manageStudents((Gérer les étudiants)):::usecase
+  validateInscr((Valider inscriptions / notes)):::usecase
+
+  teacherLogin((Se connecter)):::usecase
+  viewPlanning((Voir planning)):::usecase
+  enterGrades((Saisir notes)):::usecase
+  shareResources((Partager ressources)):::usecase
+
+  studentLogin((Se connecter)):::usecase
+  viewStudentDash((Voir tableau de bord)):::usecase
+  viewTimetable((Voir emploi du temps)):::usecase
+  viewGrades((Voir notes)):::usecase
+  consultResources((Consulter ressources)):::usecase
+
+  Admin --> login
+  Admin --> manageUnis
+  Admin --> manageSpecs
+  Admin --> manageUsers
+  Admin --> viewDash
+
+  Agent --> agentLogin
+  Agent --> followup
+  Agent --> manageModules
+  Agent --> assignTeachers
+  Agent --> manageTimetable
+  Agent --> manageStudents
+  Agent --> validateInscr
+
+  Teacher --> teacherLogin
+  Teacher --> viewPlanning
+  Teacher --> enterGrades
+  Teacher --> shareResources
+
+  Student --> studentLogin
+  Student --> viewStudentDash
+  Student --> viewTimetable
+  Student --> viewGrades
+  Student --> consultResources
+
+  login --> followup
+  manageStudents --> validateInscr

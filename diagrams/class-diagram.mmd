@@ -1,0 +1,184 @@
+classDiagram
+  class User {
+    +string id
+    +string username
+    +UserRole role
+    +string fullName
+    +string email
+    +string? specialtyId
+    +string? subSpecialty
+    +string? subSpecialtyId
+    +string? groupId
+    +string? level
+    +boolean? isApprovedForYear
+    +AcademicYearRecord[]? academicHistory
+  }
+
+  class Specialty {
+    +string id
+    +string facultyId
+    +string name
+    +SystemType system
+    +string? agentId
+    +number? creditThreshold
+    +number? doctoratYears
+    +number? classicYears
+    +string? activeSubsystem
+  }
+
+  class SubSpecialty {
+    +string id
+    +string specialtyId
+    +string level
+    +string name
+  }
+
+  class Module {
+    +string id
+    +string specialtyId
+    +string? subSpecialtyId
+    +string? subSpecialty
+    +string name
+    +string unit
+    +number credits
+    +number coefficient
+    +boolean hasCours
+    +boolean hasTD
+    +boolean hasTP
+    +1|2 semester
+    +string level
+  }
+
+  class Assignment {
+    +string id
+    +string moduleId
+    +string teacherId
+    +SessionType type
+  }
+
+  class TimetableEntry {
+    +string id
+    +string specialtyId
+    +string? subSpecialtyId
+    +string level
+    +1|2 semester
+    +string groupId
+    +string day
+    +string timeSlot
+    +string moduleId
+    +string? teacherId
+    +SessionType type
+    +string room
+  }
+
+  class Grade {
+    +string id
+    +string studentId
+    +string moduleId
+    +number? cours
+    +number? td
+    +number? tp
+    +number? rattrapage
+    +boolean approved
+  }
+
+  class Notification {
+    +string id
+    +string userId
+    +string message
+    +string date
+    +string? link
+    +boolean read
+  }
+
+  class AcademicYearRecord {
+    +string id
+    +string userId
+    +string year
+    +string level
+    +string specialtyId
+    +string? subSpecialtyId
+    +number semester1Avg
+    +number semester2Avg
+    +number annualAvg
+    +string status
+    +ModuleGradeRecord[]? moduleGrades
+  }
+
+  class ModuleGradeRecord {
+    +string id
+    +string academicHistoryId
+    +string moduleId
+    +string moduleName
+    +number? cours
+    +number? td
+    +number? tp
+    +number? rattrapage
+    +number average
+    +number coefficient
+    +1|2 semester
+  }
+
+  class Room {
+    +string id
+    +string specialtyId
+    +string name
+    +string? type
+    +number? capacity
+  }
+
+  class Resource {
+    +string id
+    +string teacherId
+    +string moduleId
+    +string specialtyId
+    +string groupId
+    +string title
+    +string type
+    +SessionType category
+    +string url
+    +string uploadDate
+  }
+
+  class GradeDispute {
+    +string id
+    +string gradeId
+    +string component
+    +string message
+    +string date
+    +string? reply
+    +string? replyDate
+    +boolean? resolved
+  }
+
+  University "1" --> "*" Faculty
+  Faculty "1" --> "*" Specialty
+  Specialty "1" --> "*" SubSpecialty
+  Specialty "1" --> "*" Module
+  Specialty "1" --> "*" Room
+  Specialty "1" --> "*" TimetableEntry
+  Specialty "1" --> "*" Resource
+  Specialty "1" --> "*" AcademicYearRecord
+
+  User "1" --> "*" Notification
+  User "1" --> "*" Grade
+  User "1" --> "*" AcademicYearRecord
+  User "1" --> "*" Resource
+  User "1" --> "*" Assignment
+
+  Module "1" --> "*" Assignment
+  Module "1" --> "*" TimetableEntry
+  Module "1" --> "*" Grade
+  Module "1" --> "*" Resource
+  Grade "1" --> "*" GradeDispute
+
+  Assignment --> User : teacherId
+  Assignment --> Module : moduleId
+  Grade --> User : studentId
+  Grade --> Module : moduleId
+  TimetableEntry --> Module : moduleId
+  TimetableEntry --> User : teacherId
+  TimetableEntry --> Room : room
+  AcademicYearRecord --> User : userId
+  AcademicYearRecord --> Specialty : specialtyId
+  ModuleGradeRecord --> AcademicYearRecord : academicHistoryId

@@ -1,0 +1,18 @@
+sequenceDiagram
+  participant Agent as Agent utilisateur
+  participant App as App.tsx
+  participant DB as DBProvider/useDB
+  participant Supabase as supabaseService
+  participant Layout as Layout
+  participant Monitoring as MonitoringView
+
+  Agent->>App: clique sur "Suivi & Alertes"
+  App->>App: setActiveView('monitoring')
+  App->>Layout: render(user, activeView)
+  Layout->>Monitoring: render(specialtyId)
+  Monitoring->>DB: lire db.specialties, db.modules, db.assignments, db.timetable, db.users
+  DB-->>Monitoring: retourne les données locales
+  Monitoring->>Monitoring: calculer les modules sans enseignant
+  Monitoring->>Monitoring: calculer les séances manquantes dans l'EDT
+  Monitoring-->>Layout: affiche cartes d'alerte
+  Layout-->>Agent: affiche la page Suivi & Alertes

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "generate:diagrams": "mmdc -i diagrams/use-case.mmd -o diagrams/use-case.svg && mmdc -i diagrams/sequence.mmd -o diagrams/sequence.svg && mmdc -i diagrams/class-diagram.mmd -o diagrams/class-diagram.svg"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
@@ -20,9 +21,11 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.12.0",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "puppeteer": "^23.11.1",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.4.2"
   }
 }
