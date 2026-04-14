@@ -1,0 +1,102 @@
+%%{init: { 'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6', 'secondaryColor': '#f97316', 'tertiaryColor': '#10b981', 'lineColor': '#374151', 'textColor': '#111827' } }}%%
+erDiagram
+  UNIVERSITY {
+    string id PK
+    string name
+  }
+  FACULTY {
+    string id PK
+    string universityId FK
+    string name
+  }
+  SPECIALTY {
+    string id PK
+    string facultyId FK
+    string name
+    string system
+  }
+  SUBSPECIALTY {
+    string id PK
+    string specialtyId FK
+    string name
+  }
+  MODULE {
+    string id PK
+    string specialtyId FK
+    string name
+    number credits
+  }
+  ROOM {
+    string id PK
+    string specialtyId FK
+    string name
+  }
+  TIMETABLEENTRY {
+    string id PK
+    string specialtyId FK
+    string moduleId FK
+    string teacherId FK
+    string room
+  }
+  USER {
+    string id PK
+    string username
+    string role
+  }
+  NOTIFICATION {
+    string id PK
+    string userId FK
+    string message
+  }
+  ASSIGNMENT {
+    string id PK
+    string moduleId FK
+    string teacherId FK
+  }
+  GRADE {
+    string id PK
+    string studentId FK
+    string moduleId FK
+    number average
+  }
+  ACADEMICYEARRECORD {
+    string id PK
+    string userId FK
+    string specialtyId FK
+    string year
+  }
+  MODULEGRADERECORD {
+    string id PK
+    string academicHistoryId FK
+    string moduleId FK
+    number average
+  }
+  GRADEDISPUTE {
+    string id PK
+    string gradeId FK
+    string status
+  }
+
+  UNIVERSITY ||--o{ FACULTY : has
+  FACULTY ||--o{ SPECIALTY : has
+  SPECIALTY ||--o{ SUBSPECIALTY : has
+  SPECIALTY ||--o{ MODULE : offers
+  SPECIALTY ||--o{ ROOM : includes
+  SPECIALTY ||--o{ TIMETABLEENTRY : schedules
+  SPECIALTY ||--o{ ACADEMICYEARRECORD : contains
+
+  USER ||--o{ NOTIFICATION : receives
+  USER ||--o{ ASSIGNMENT : assigned
+  USER ||--o{ GRADE : receives
+  USER ||--o{ ACADEMICYEARRECORD : owns
+
+  MODULE ||--o{ ASSIGNMENT : assigned_to
+  MODULE ||--o{ TIMETABLEENTRY : scheduled
+  MODULE ||--o{ GRADE : graded
+  MODULE ||--o{ MODULEGRADERECORD : recorded
+
+  GRADE ||--o{ GRADEDISPUTE : disputed
+  TIMETABLEENTRY }o--|| ROOM : located_in
+  TIMETABLEENTRY }o--|| USER : taught_by
+  ACADEMICYEARRECORD }o--|| SPECIALTY : for
+  MODULEGRADERECORD }o--|| ACADEMICYEARRECORD : part_of
