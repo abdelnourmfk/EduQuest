@@ -113,7 +113,31 @@ export const loadDBFromSupabase = async (): Promise<DB> => {
   }
 };
 
-export const generatePassword = () => Math.random().toString(36).slice(-8);
+export const generatePassword = () => {
+  const length = 8;
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  // Use cryptographically secure RNG if available
+  const cryptoObj: Crypto | undefined =
+    typeof window !== 'undefined'
+      ? (window.crypto || (window as any).msCrypto)
+      : (typeof globalThis !== 'undefined' ? (globalThis as any).crypto : undefined);
+
+  if (cryptoObj && typeof cryptoObj.getRandomValues === 'function') {
+    const randomValues = new Uint32Array(length);
+    cryptoObj.getRandomValues(randomValues);
+
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      const index = randomValues[i] % charset.length;
+      password += charset.charAt(index);
+    }
+    return password;
+  }
+
+  // Fallback to Math.random() if crypto is not available (non-browser environments)
+  return Math.random().toString(36).slice(-8);
+};
 
 export const createNotification = async (userId: string, message: string, link?: string) => {
   const n: Notification = {
